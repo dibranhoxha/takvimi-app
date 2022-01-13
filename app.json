@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "takvimi-app",
+    "slug": "takvimi-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "takvimi-app"
+}
