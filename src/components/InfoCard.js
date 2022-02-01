@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = 0.95 * width;
-const cardHeight = 0.38 * height;
+const cardHeight = 0.45 * height;
 const InfoCard = ({ remainingTime, list }) => {
     const [newList, setNewList] = useState(list);
 
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: cardWidth,
-        height: cardHeight,
+        // height: cardHeight,
         alignSelf: "center",
         paddingTop: 5,
         backgroundColor: "#fff",

@@ -88,7 +88,7 @@ const QiblaScreen = () => {
                 backgroundColor:
                     _degree(magnetometer) >= 137 && _degree(magnetometer) <= 150
                         ? "green"
-                        : "#fff",
+                        : "#EDEDED",
             }}
         >
             <Row style={{ alignItems: "center" }} size={0.1}>
@@ -118,7 +118,7 @@ const QiblaScreen = () => {
             <Row style={{ alignItems: "center" }} size={2}>
                 <Col style={{ alignItems: "center" }}>
                     <Image
-                        source={require("../assets/images/compass.png")}
+                        source={require("../../assets/images/compass.png")}
                         style={{
                             height: width - 80,
                             justifyContent: "center",

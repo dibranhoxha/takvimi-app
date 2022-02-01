@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
-import HomeScreen from "./screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
+import { LocationContextProvider } from "./context/LocationContext";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 
 const Main = () => {
     return (
-        <NavigationContainer>
-            <BottomTabNavigator />
-        </NavigationContainer>
+        <LocationContextProvider>
+            <NavigationContainer>
+                <BottomTabNavigator />
+            </NavigationContainer>
+        </LocationContextProvider>
     );
 };
 

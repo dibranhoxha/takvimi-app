@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Alert, Dimensions } from "react-native";
-import Header from "../components/Header";
-import InfoCard from "../components/InfoCard";
+import Header from "../../components/Header";
+import InfoCard from "../../components/InfoCard";
 
-const Home = () => {
+const Home = ({ navigation }) => {
     const [times, setTimes] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getTimings();
+        // getTimings();
         return () => setTimes(null);
     }, []);
 
@@ -34,7 +34,7 @@ const Home = () => {
     ];
     return (
         <View style={{ padding: 0, margin: 0 }}>
-            <Header />
+            <Header navigation={navigation} />
             <InfoCard remainingTime={"1 hour 34 minutes left"} list={list} />
         </View>
     );

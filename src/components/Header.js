@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -9,10 +9,18 @@ import {
     Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useLocation } from "../context/LocationContext";
 
 const { width, height } = Dimensions.get("window");
 
-const Header = (props) => {
+const Header = ({ navigation }) => {
+    const [locationState, locationDispatch] = useLocation();
+    const [selectedLocation, setSelectedLocation] = useLocation();
+
+    useEffect(() => {
+        console.log(locationState);
+    }, []);
+
     const containerHeight = 0.4 * height;
     return (
         <View
@@ -32,10 +40,17 @@ const Header = (props) => {
                 }}
             >
                 <View style={{ width: 0.85 * width }}>
-                    <TouchableOpacity>
-                        <Text style={{ fontSize: 24, color: "#fff" }}>
-                            Pristina
-                        </Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Location")}
+                    >
+                        {locationState.location.name ? (
+                            <Text style={styles.text}>
+                                {locationState.location.nativeName} [
+                                {locationState.location.capital}]
+                            </Text>
+                        ) : (
+                            <Text style={styles.text}>Choose location</Text>
+                        )}
                     </TouchableOpacity>
                 </View>
                 <View
@@ -91,6 +106,7 @@ const styles = StyleSheet.create({
     //   alignSelf: "center",
     //   textTransform: "uppercase"
     // }
+    text: { fontSize: 24, color: "#fff" }
 });
 
 export default Header;
