@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useLocation } from "../../context/LocationContext";
 
-const API_ENDPOINT = "https://restcountries.com/v2/all";
+const API = "https://restcountries.com/v2/all";
 
 const LocationsScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +24,7 @@ const LocationsScreen = ({ navigation }) => {
     useEffect(() => {
         setIsLoading(true);
 
-        fetch(API_ENDPOINT)
+        fetch(API)
             .then((response) => response.json())
             .then((results) => {
                 // console.log(results);

@@ -13,6 +13,8 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 
 const { height, width } = Dimensions.get("window");
 
+const API = "http://api.aladhan.com/v1/qibla"
+
 const QiblaScreen = () => {
     const [subscription, setSubscription] = useState(null);
     const [magnetometer, setMagnetometer] = useState(0);
