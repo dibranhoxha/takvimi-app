@@ -77,7 +77,7 @@ const InfoCard = ({ remainingTime, list }) => {
                             <View
                                 style={{
                                     width: cardWidth / 3,
-                                    alignItems: "left",
+                                    // alignItems: "left",
                                     // backgroundColor: "#fa5",
                                     padding: 5,
                                 }}
