@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     Text,
@@ -7,13 +7,21 @@ import {
     Image,
     TouchableOpacity,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = 0.95 * width;
 const cardHeight = 0.45 * height;
-const InfoCard = ({ remainingTime, list }) => {
-    const [newList, setNewList] = useState(list);
+const InfoCard = () => {
+    const [newList, setNewList] = useState([]);
+
+    const times = useSelector((state) => state.prayerTimes);
+
+    useEffect(() => {
+        setNewList(times.prayerTimes)
+        console.log({times});
+    });
 
     const changeAlarmActive = (id) => {
         const _list = newList.map((item) =>
@@ -21,8 +29,12 @@ const InfoCard = ({ remainingTime, list }) => {
         );
         setNewList(_list);
     };
+
+    const calculateRemainingTime = () => {};
     return (
-        <View style={[styles.card, styles.shadowProp]}>
+        <View
+         style={[styles.card, styles.shadowProp]}
+         >
             <View
                 style={{
                     flexDirection: "row",
@@ -42,7 +54,7 @@ const InfoCard = ({ remainingTime, list }) => {
                     }}
                 >
                     <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                        {remainingTime}
+                        {"remainingTime"}
                     </Text>
                 </View>
                 <View
@@ -85,7 +97,7 @@ const InfoCard = ({ remainingTime, list }) => {
                                 <Text
                                     style={{ fontSize: 16, fontWeight: "bold" }}
                                 >
-                                    {listItem.title}
+                                    {listItem.timeName}
                                 </Text>
                             </View>
                             <View
@@ -144,7 +156,7 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         backgroundColor: "#fff",
         borderRadius: 10,
-        marginTop: -0.3 * width,
+        marginTop: -0.5 * width,
     },
     shadowProp: {
         shadowColor: "#171717",

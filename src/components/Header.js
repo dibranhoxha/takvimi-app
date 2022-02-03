@@ -18,7 +18,7 @@ const Header = ({ navigation }) => {
     const [selectedLocation, setSelectedLocation] = useLocation();
 
     useEffect(() => {
-        console.log(locationState);
+        // console.log(locationState);
     }, []);
 
     const containerHeight = 0.4 * height;
@@ -73,7 +73,7 @@ const Header = ({ navigation }) => {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: containerHeight * 0.7,
+                    height: containerHeight * 0.4,
                 }}
             >
                 <View>
