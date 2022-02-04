@@ -28,19 +28,20 @@ export const fetchOrientationFailure = (error) => {
     };
 };
 
-export const fetchOrientation = (city = "Pristina", country = "Kosovo") => {
+export const fetchOrientation = (latitude = 42.574564, longitude = 21.029508) => {
     return (dispatch) => {
-        dispatch(fetchOrientationRequest);
+        dispatch(fetchOrientationRequest());
         fetch(
-            `${API}/v1/qibla:/${latitude}/:${longitude}&method=4`
+            `${API}/v1/qibla/${latitude}/${longitude}`
         )
             .then((response) => response.json())
-            .then(({ data }) => {
-                // console.log("d: ", data.timings);
-                // console.log(timings);
-                const listOfTimes = addID(data.timings);
-                console.log({ listOfTimes });
-                dispatch(fetchOrientationSuccess(listOfTimes));
+            .then((result) => {
+                // console.log(result);
+                if(result.code === 200) {
+                    dispatch(fetchOrientationSuccess(result.data));
+                } else {
+                    fetchOrientationFailure(result.data)
+                }
             })
             .catch((error) => {
                 const errorMessage = error.message || "Unknown Error occurred";
@@ -49,17 +50,3 @@ export const fetchOrientation = (city = "Pristina", country = "Kosovo") => {
     };
 };
 
-const addID = (timesObj) => {
-    // console.log(timesObj);
-    const list = [];
-    for (const key in timesObj) {
-        const obj = {
-            timeName: key,
-            time: timesObj[key],
-            id: uuid.v4(),
-            active: false,
-        };
-        list.push(obj);
-    }
-    return list;
-};

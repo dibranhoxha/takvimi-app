@@ -30,17 +30,13 @@ export const fetchTimesFailure = (error) => {
 
 export const fetchTimes = (city = 'Pristina', country = 'Kosovo') => {
     return (dispatch) => {
-        dispatch(fetchTimesRequest)
+        dispatch(fetchTimesRequest())
         fetch(
             `${API}/v1/timingsByCity?city=${city}&country=${country}&method=4`
         )
             .then(response => response.json())
             .then(({ data }) => {
-                
-                // console.log("d: ", data.timings);
-                // console.log(timings);
                 const listOfTimes = addID(data.timings);
-                console.log({listOfTimes});
                 dispatch(fetchTimesSuccess(listOfTimes))
 
             })
@@ -52,7 +48,6 @@ export const fetchTimes = (city = 'Pristina', country = 'Kosovo') => {
 }
 
 const addID = (timesObj) => {
-    // console.log(timesObj);
     const list = []
     for (const key in timesObj) {
         const obj ={
