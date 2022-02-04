@@ -121,7 +121,7 @@ const BottomTabNavigator = () => {
         >
             <Tab.Screen name="Qibla" component={QiblaScreen} />
             <Tab.Screen name="Home" component={HomeStackNavigator} />
-            <Tab.Screen name="Feed" component={FeedScreen} />
+            <Tab.Screen name="Feed" component={FeedScreen}  />
         </Tab.Navigator>
     );
 };
