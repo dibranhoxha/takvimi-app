@@ -15,20 +15,20 @@ import { useSelector } from "react-redux";
 import Constants from "expo-constants";
 import * as Location from "expo-location";
 
-const { width, height } = Dimensions.get("window");
-
 const Header = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [locationState, locationDispatch] = useLocation();
   const [selectedLocation, setSelectedLocation] = useLocation();
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState(null);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  const { prayerTimes, loading: timesLoading, error } = useSelector(
-    (state) => state.prayerTimes
-  );
+  const {
+    prayerTimes,
+    loading: timesLoading,
+    error,
+  } = useSelector((state) => state.prayerTimes);
 
   useEffect(() => {
     setLocation(locationState.location);
@@ -36,14 +36,14 @@ const Header = ({ navigation }) => {
   }, [locationState]);
 
   const getDate = () => {
-      const newDate = new Date();
-      const date = newDate.getDate();
-      const formatedDate = date < 10 ? `0${date}`:date;
-      const month = newDate.getMonth() + 1;
-      const formatedMonth = month < 10 ? `0${month}`:month;
-      const year = newDate.getFullYear()
-      setDate(`${formatedDate}.${formatedMonth}.${year}`)
-  }
+    const newDate = new Date();
+    const date = newDate.getDate();
+    const formatedDate = date < 10 ? `0${date}` : date;
+    const month = newDate.getMonth() + 1;
+    const formatedMonth = month < 10 ? `0${month}` : month;
+    const year = newDate.getFullYear();
+    setDate(`${formatedDate}.${formatedMonth}.${year}`);
+  };
 
   const getYourLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -86,35 +86,35 @@ const Header = ({ navigation }) => {
     );
   }
 
-  const containerHeight = 0.4 * height;
   return (
     <View
       style={{
+        flex: 1,
         backgroundColor: "#339989",
-        width: width,
-        height: containerHeight,
-        flexDirection: "column",
-        padding: 5,
       }}
     >
       {loading ? (
-        <ActivityIndicator size="small" color="#fff" />
+        <View style={{ padding: 7 }}>
+          <ActivityIndicator size="small" color="#fff" />
+        </View>
       ) : (
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            padding: 5,
+            padding: 7,
           }}
         >
-          <View style={{ width: 0.85 * width }}>
+          <View style={{ flex: 9 }}>
             <TouchableOpacity onPress={() => navigation.navigate("Location")}>
               {location?.name ? (
                 <Text style={styles.text}>
                   {location.name} [
                   {location.capital
                     ? location.capital
-                    : `${location.latitude.toFixed(3)}, ${location.longitude.toFixed(3)}`}
+                    : `${location.latitude.toFixed(
+                        3
+                      )}, ${location.longitude.toFixed(3)}`}
                   ]
                 </Text>
               ) : (
@@ -124,14 +124,14 @@ const Header = ({ navigation }) => {
           </View>
           <View
             style={{
-              width: 0.1 * width,
+              flex: 1,
               justifyContent: "center",
               alignItems: "center",
             }}
           >
             <TouchableOpacity onPress={getYourLocation}>
               <Image
-                style={{ width: 22, height: 22 }}
+                style={{ width: 25, height: 25 }}
                 source={require("../assets/images/my-location.png")}
               />
             </TouchableOpacity>
@@ -140,21 +140,26 @@ const Header = ({ navigation }) => {
       )}
       <View
         style={{
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          height: containerHeight * 0.4,
+          flex: 1,
         }}
       >
-        <View>
-          <Text style={{ fontSize: 18, color: "#fff" }}>
-            {"date"}
-          </Text>
-        </View>
-        <View>
-          <Text style={{ fontSize: 18, color: "#fff" }}>8 Shawwal 1441</Text>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            // backgroundColor: "#f45",
+          }}
+        >
+          <View>
+            <Text style={{ fontSize: 18, color: "#fff" }}>{"date"}</Text>
+          </View>
+          <View>
+            <Text style={{ fontSize: 18, color: "#fff" }}>8 Shawwal 1441</Text>
+          </View>
         </View>
       </View>
+      <View style={{ flex: 1 }} />
     </View>
   );
 };

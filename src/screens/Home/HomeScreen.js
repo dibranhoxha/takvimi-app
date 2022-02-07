@@ -12,9 +12,13 @@ const Home = ({ navigation }) => {
     dispatch(fetchTimes());
   }, [dispatch]);
   return (
-    <View style={{ padding: 0, margin: 0 }}>
-      <Header navigation={navigation} />
-      <InfoCard />
+    <View style={{ flex: 1, padding: 0, margin: 0 }}>
+      <View style={{ flex: 2 }}>
+        <Header navigation={navigation} />
+      </View>
+      <View style={{ flex: 3, justifyContent: 'center' }}>
+        <InfoCard />
+      </View>
     </View>
   );
 };

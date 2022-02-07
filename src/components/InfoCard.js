@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = 0.95 * width;
@@ -63,102 +63,63 @@ const InfoCard = () => {
     );
   }
 
+  const alarmImagePath = (active) => {
+    return active
+      ? require("../assets/images/alarm-icon-disabled.png")
+      : require("../assets/images/alarm-icon.png");
+  };
+
   return (
-    <View style={[styles.card, styles.shadowProp]}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          paddingBottom: 5,
-          borderBottomWidth: 1,
-        }}
-      >
-        <View
-          style={{
-            width: cardWidth * 0.85,
-            alignItems: "center",
-            paddingLeft: 50,
-            // backgroundColor: "#fa5",
-            padding: 5,
-          }}
-        >
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-            {"remainingTime"}
-          </Text>
-        </View>
-        <View
-          style={{
-            width: cardWidth * 0.15,
-            alignItems: "center",
-            justifyContent: "center",
-            // backgroundColor: "#f45",
-            padding: 5,
-          }}
-        >
-          <TouchableOpacity>
-            <Ionicons name="settings-sharp" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{ padding: 10 }}>
-        {newList?.length > 0 &&
-          newList.map((listItem) => (
-            <View
-              style={{
-                flexDirection: "row",
-                padding: 5,
-                // backgroundColor: "#f45",
-              }}
-              key={listItem.id}
-            >
-              <View
-                style={{
-                  width: cardWidth / 3,
-                  alignItems: "left",
-                  // backgroundColor: "#fa5",
-                  padding: 2,
-                }}
-              >
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                  {listItem.timeName}
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: cardWidth / 3,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 2,
-                }}
-              >
-                <Text style={{ fontSize: 16 }}>{listItem.time}</Text>
-              </View>
-              <TouchableOpacity
-                style={{
-                  width: cardWidth / 3,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 2,
-                }}
-                onPress={() => changeAlarmActive(listItem.id)}
-              >
-                {/* <Text style={{ fontSize: 18 }}>active</Text> */}
-                {listItem.active ? (
-                  <Image
-                    style={{ width: 22, height: 22 }}
-                    source={require("../assets/images/alarm-icon.png")}
-                  />
-                ) : (
-                  <Image
-                    style={{ width: 22, height: 22 }}
-                    source={require("../assets/images/alarm-icon-disabled.png")}
-                  />
-                )}
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 2 }}>
+        <View style={[styles.card, styles.shadowProp]}>
+          <View style={styles.cardHeader}>
+            <View style={styles.remainingTime}>
+              <Text style={styles.boldText}>{"remainingTime"}</Text>
+            </View>
+            <View style={styles.iconContainer}>
+              <TouchableOpacity>
+                <Ionicons name="settings-sharp" size={20} color="black" />
               </TouchableOpacity>
             </View>
-          ))}
+          </View>
+          <View style={styles.timesContainer}>
+            {newList?.length > 0 &&
+              newList.map((listItem) => (
+                <View
+                  style={[
+                    styles.listItem,
+                    {
+                      borderWidth: newList.indexOf(listItem) === 3 ? 2 : "",
+                      borderRadius: newList.indexOf(listItem) === 3 ? 20 : "",
+                    },
+                  ]}
+                  key={listItem.id}
+                >
+                  <View style={styles.timeName}>
+                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                      {listItem.timeName}
+                    </Text>
+                  </View>
+                  <View style={styles.time}>
+                    <Text style={{ fontSize: 16 }}>{listItem.time}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.alarm}
+                    onPress={() => changeAlarmActive(listItem.id)}
+                  >
+                    <Feather
+                      name={`bell${listItem.active ? "" : "-off"}`}
+                      size={24}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+              ))}
+          </View>
+        </View>
       </View>
+      <View style={{ flex: 1 }} />
     </View>
   );
 };
@@ -166,19 +127,57 @@ const InfoCard = () => {
 export default InfoCard;
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 13,
-  },
   card: {
-    width: cardWidth,
-    // height: cardHeight,
-    alignSelf: "center",
-    paddingTop: 5,
+    margin: 10,
+    marginTop: "-30%",
+    padding: 10,
+    paddingBottom: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
-    marginTop: -0.2 * height,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+  },
+  remainingTime: {
+    flex: 9,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 50,
+  },
+  text: { fontSize: 16 },
+  boldText: { fontSize: 16, fontWeight: "bold" },
+  iconContainer: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    padding: 5,
+  },
+  timesContainer: { paddingTop: 10 },
+  listItem: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderColor: "#009688",
+  },
+  timeName: {
+    flex: 1,
+    alignItems: "flex-start",
+  },
+  time: {
+    flex: 1,
+    alignItems: "center",
+  },
+  alarm: {
+    flex: 1,
+    alignItems: "flex-end",
   },
   shadowProp: {
     shadowColor: "#171717",
