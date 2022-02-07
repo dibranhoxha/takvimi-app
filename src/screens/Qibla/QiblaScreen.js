@@ -10,15 +10,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Magnetometer } from "expo-sensors";
-import { Grid, Col, Row } from "react-native-easy-grid";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrientation } from "../../redux/actions/orienationAction";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useLocation } from "../../context/LocationContext";
 
 const { height, width } = Dimensions.get("window");
-
-const API = "http://api.aladhan.com/v1/qibla";
 
 const QiblaScreen = () => {
   const [subscription, setSubscription] = useState(null);
@@ -32,7 +29,7 @@ const QiblaScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const {latitude, longitude} = locationState;
+    const { latitude, longitude } = locationState;
     dispatch(fetchOrientation(latitude, longitude));
   }, [dispatch]);
 
@@ -100,38 +97,60 @@ const QiblaScreen = () => {
   }
 
   return (
-    <Grid
-      style={{
-        backgroundColor:
-          _degree(magnetometer) >= 135 && _degree(magnetometer) <= 145
-            ? "green"
-            : "#EDEDED",
-      }}
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor:
+            _degree(magnetometer) >= 135 && _degree(magnetometer) <= 150
+              ? "green"
+              : "#EDEDED",
+        },
+      ]}
     >
-      <Row style={{ alignItems: "center" }} size={0.1}>
-        <Col style={{ alignItems: "center" }}>
-          {_degree(magnetometer) >= 135 && _degree(magnetometer) <= 145 && (
-            <FontAwesome5 name="kaaba" size={24} color="black" />
-          )}
-        </Col>
-      </Row>
+      <View style={styles.kaabaIconContainer}>
+        {_degree(magnetometer) >= 135 && _degree(magnetometer) <= 150 && (
+          <FontAwesome5 name="kaaba" size={36} color="black" />
+        )}
+      </View>
 
-      <Row style={{ alignItems: "center" }} size={2}>
-        <Col style={{ alignItems: "center" }}>
-          <Image
-            source={require("../../assets/images/compass.png")}
-            style={{
-              height: width - 80,
-              justifyContent: "center",
-              alignItems: "center",
-              resizeMode: "contain",
-              transform: [{ rotate: - magnetometer - direction + "deg" }],
-            }}
-          />
-        </Col>
-      </Row>
-    </Grid>
+      <View style={styles.kaabaImageContainer}>
+        <Image
+          source={require("../../assets/images/compass.png")}
+          style={[
+            styles.kaabaImage,
+            {
+              transform: [{ rotate: -magnetometer - direction + "deg" }],
+            },
+          ]}
+        />
+        <View style={styles.helperView} />
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  kaabaIconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  kaabaImageContainer: {
+    flex: 3,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  kaabaImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    resizeMode: "contain",
+  },
+  helperView: { flex: 1 / 2 },
+});
 
 export default QiblaScreen;
