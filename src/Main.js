@@ -1,20 +1,32 @@
-import React, { Component } from "react";
-import { Text, View } from "react-native";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { LocationContextProvider } from "./context/LocationContext";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
-import { Provider } from "react-redux";
-import store from "./redux/store/index";
+import { useDispatch } from "react-redux";
+import { useLocation } from "./context/LocationContext";
+import { fetchTimes } from "./redux/actions/prayerTimesAction";
+import { _storeData, _retrieveData, _clearData } from "./storage/Storage";
 
 const Main = () => {
+    const dispatch = useDispatch();
+    const [locationState, locationDispatch] = useLocation();
+
+    useEffect(() => {
+        retrieveLocation();
+        dispatch(fetchTimes());
+    }, [dispatch]);
+
+    const retrieveLocation = async () => {
+        const location = await _retrieveData("location");
+        locationDispatch({
+            type: "SET_LOCATION",
+            payload: { location },
+        });
+    };
+    
     return (
-        <Provider store={store}>
-            <LocationContextProvider>
-                <NavigationContainer>
-                    <BottomTabNavigator />
-                </NavigationContainer>
-            </LocationContextProvider>
-        </Provider>
+        <NavigationContainer>
+            <BottomTabNavigator />
+        </NavigationContainer>
     );
 };
 

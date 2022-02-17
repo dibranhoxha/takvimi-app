@@ -34,7 +34,6 @@ export const fetchLocations = () => {
     fetch(API)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         dispatch(fetchLocationsSuccess(data));
       })
       .catch((error) => {

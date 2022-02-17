@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     loading: false,
-    prayerTimes: _retrieveData("prayerTimes"),
+    prayerTimes: null,
     error: "",
 };
 
@@ -19,10 +19,6 @@ const prayerTimesReducer = (state = initialState, action) => {
                 loading: true,
             };
         case FETCH_TIMES_SUCCESS:
-            _storeData(
-                "prayerTimes",
-                JSON.stringify(action.payload.prayerTimes)
-            );
             return {
                 ...state,
                 loading: false,

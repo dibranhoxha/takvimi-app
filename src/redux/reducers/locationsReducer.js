@@ -19,10 +19,6 @@ const locationsReducer = (state = initialState, action) => {
                 loading: true,
             };
         case FETCH_LOCATIONS_SUCCESS:
-            _storeData(
-                "locations",
-                JSON.stringify(action.payload.locations)
-            );
             return {
                 ...state,
                 loading: false,

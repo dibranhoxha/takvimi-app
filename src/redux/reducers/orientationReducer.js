@@ -19,10 +19,6 @@ const orientationReducer = (state = initialState, action) => {
                 loading: true,
             };
         case FETCH_ORIENTATION_SUCCESS:
-            _storeData(
-                "orientation",
-                JSON.stringify(action.payload.orientation)
-            );
             return {
                 ...state,
                 loading: false,
