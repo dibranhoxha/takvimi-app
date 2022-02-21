@@ -50,21 +50,21 @@ export const fetchTimes = (latitude = 42.574564, longitude = 21.029508) => {
     };
 };
 
-// const getClosedTime = (times) => {
-//     const arr = [...times];
-//     // sortAnother(arr);
-//     const sortedTimes = times
-//         .slice()
-//         .sort((a, b) => b.time.localeCompare(getCurrentTime()));
-//     return sortedTimes[0];
-// };
-
 const getClosedTime = (times) => {
+    const arr = [...times];
+    // sortAnother(arr);
     const sortedTimes = times
-    .slice()
-    .sort((a, b) => b.time.toString() < getCurrentTime().toString());
+        .slice()
+        .sort((a, b) => b.time.localeCompare(getCurrentTime()));
     return sortedTimes[0];
 };
+
+// const getClosedTime = (times) => {
+//     const sortedTimes = times
+//     .slice()
+//     .sort((a, b) => b.time.toString() < getCurrentTime().toString());
+//     return sortedTimes[0];
+// };
 
 // const getClosedTime = (times) => {
 //     const sortedTimes = times

@@ -25,12 +25,9 @@ const InfoCard = ({ setShowFavoriteTimes }) => {
 
     useEffect(() => {
         if (favoriteTimesState.favoriteTimes.length) {
-            console.log("if");
             setNewList(favoriteTimesState.favoriteTimes);
         } else {
             if (prayerTimes) {
-                console.log("if");
-
                 setNewList(prayerTimes.timings);
             }
         }
