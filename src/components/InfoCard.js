@@ -13,20 +13,36 @@ import { Ionicons, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { fetchTimes } from "../redux/actions/prayerTimesAction";
 import { getRemainingTime } from "../redux/actions/remaningTimeAction";
 import InfoCardHeader from "./InfoCardHeader";
+import { useFavoriteTimes } from "../context/FavoriteTimesContext";
 
-const InfoCard = () => {
+const InfoCard = ({ setShowFavoriteTimes }) => {
     const dispatch = useDispatch();
     const [newList, setNewList] = useState([]);
+    const [favoriteTimesState, favoriteTimesDispatch] = useFavoriteTimes();
     const { prayerTimes, loading, error } = useSelector(
         (state) => state.prayerTimes
     );
 
     useEffect(() => {
-        if (prayerTimes) {
-            setNewList(prayerTimes.timings);
+        if (favoriteTimesState.favoriteTimes.length) {
+            console.log("if");
+            setNewList(favoriteTimesState.favoriteTimes);
+        } else {
+            if (prayerTimes) {
+                console.log("if");
+
+                setNewList(prayerTimes.timings);
+            }
         }
         return () => setNewList([]);
-    }, [prayerTimes]);
+    }, [favoriteTimesState, prayerTimes]);
+
+    // useEffect(() => {
+    //     if (prayerTimes) {
+    //         setNewList(prayerTimes.timings);
+    //     }
+    //     return () => setNewList([]);
+    // }, [prayerTimes]);
 
     const getTimes = () => {
         if (
@@ -76,67 +92,79 @@ const InfoCard = () => {
             <View style={{ flex: 2 }}>
                 <View style={[styles.card, styles.shadowProp]}>
                     {prayerTimes && "closedTime" in prayerTimes && (
-                        <InfoCardHeader time={prayerTimes.closedTime.time} />
+                        <InfoCardHeader
+                            time={prayerTimes.closedTime.time}
+                            setShowFavoriteTimes={setShowFavoriteTimes}
+                        />
                     )}
                     <View style={styles.timesContainer}>
                         {newList?.length > 0 &&
-                            newList.map((listItem) => (
-                                <View
-                                    style={[
-                                        styles.listItem,
-                                        {
-                                            borderWidth:
-                                                listItem.id ===
-                                                prayerTimes?.closedTime.id
-                                                    ? 2
-                                                    : "",
-                                            borderRadius:
-                                                listItem.id ===
-                                                prayerTimes?.closedTime.id
-                                                    ? 20
-                                                    : "",
-                                        },
-                                    ]}
-                                    key={listItem.id}
-                                >
-                                    <View style={styles.timeName}>
-                                        <Text
-                                            style={{
-                                                fontSize: 16,
-                                                fontWeight: "bold",
-                                            }}
+                            newList.map(
+                                (listItem) =>
+                                    listItem.favorite && (
+                                        <View
+                                            style={[
+                                                styles.listItem,
+                                                {
+                                                    borderWidth:
+                                                        listItem.id ===
+                                                        prayerTimes?.closedTime
+                                                            .id
+                                                            ? 2
+                                                            : "",
+                                                    borderRadius:
+                                                        listItem.id ===
+                                                        prayerTimes?.closedTime
+                                                            .id
+                                                            ? 20
+                                                            : "",
+                                                },
+                                            ]}
+                                            key={listItem.id}
                                         >
-                                            {listItem.timeName}
-                                        </Text>
-                                    </View>
-                                    <View style={styles.time}>
-                                        <Text style={{ fontSize: 16 }}>
-                                            {listItem.time}
-                                        </Text>
-                                    </View>
-                                    <TouchableOpacity
-                                        style={styles.alarm}
-                                        onPress={() =>
-                                            changeAlarmActive(listItem.id)
-                                        }
-                                    >
-                                        <Feather
-                                            name={`bell${
-                                                listItem.active ? "" : "-off"
-                                            }`}
-                                            size={24}
-                                            color="black"
-                                        />
-                                        {/* <MaterialCommunityIcons
+                                            <View style={styles.timeName}>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 16,
+                                                        fontWeight: "bold",
+                                                    }}
+                                                >
+                                                    {listItem.timeName}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.time}>
+                                                <Text style={{ fontSize: 16 }}>
+                                                    {listItem.time}
+                                                </Text>
+                                            </View>
+                                            <TouchableOpacity
+                                                style={styles.alarm}
+                                                onPress={() =>
+                                                    changeAlarmActive(
+                                                        listItem.id
+                                                    )
+                                                }
+                                            >
+                                                <Feather
+                                                    name={`bell${
+                                                        listItem.active
+                                                            ? ""
+                                                            : "-off"
+                                                    }`}
+                                                    size={24}
+                                                    color="black"
+                                                />
+                                                {/* <MaterialCommunityIcons
                                             name={`bell${
                                                 listItem.active ? "-ring-outline" : "-off-outline"
                                             }`}
                                             size={24}
                                             color="black"
                                         /> */}
-                                    </TouchableOpacity>
-                                </View>
-                            ))}
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                            )}
                     </View>
                 </View>
             </View>

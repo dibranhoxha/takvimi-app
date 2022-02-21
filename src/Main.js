@@ -7,13 +7,11 @@ import { fetchTimes } from "./redux/actions/prayerTimesAction";
 import { _storeData, _retrieveData, _clearData } from "./storage/Storage";
 
 const Main = () => {
-    const dispatch = useDispatch();
     const [locationState, locationDispatch] = useLocation();
 
     useEffect(() => {
-        retrieveLocation();
-        dispatch(fetchTimes());
-    }, [dispatch]);
+        // retrieveLocation();
+    }, []);
 
     const retrieveLocation = async () => {
         const location = await _retrieveData("location");

@@ -18,20 +18,14 @@ const QiblaScreen = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(locationState.location);
-        if (
-            locationState &&
-            "location" in locationState &&
-            "latlng" in locationState.location
-        ) {
+        console.log(locationState);
+        if (locationState.location) {
             const {
                 latlng: [latitude, longitude],
             } = locationState.location || null;
             dispatch(fetchOrientation(latitude, longitude));
-            return;
         }
-        dispatch(fetchOrientation());
-    }, [dispatch]);
+    }, [locationState]);
 
     useEffect(() => {
         setDirection(orientation.direction);
@@ -123,12 +117,10 @@ const QiblaScreen = () => {
                 },
             ]}
         >
-            <Text style={styles.text}>
-                {_degree(magnetometer) }
-            </Text>
+            <Text style={styles.text}>{_degree(magnetometer)}</Text>
             <View style={styles.kaabaIconContainer}>
                 {_degree(magnetometer) >= parseInt(direction) - 15 &&
-                        _degree(magnetometer) <= parseInt(direction) + 15 && (
+                    _degree(magnetometer) <= parseInt(direction) + 15 && (
                         <FontAwesome5 name="kaaba" size={36} color="black" />
                     )}
             </View>
@@ -140,7 +132,12 @@ const QiblaScreen = () => {
                         styles.kaabaImage,
                         {
                             transform: [
-                                { rotate: _degree(magnetometer - parseInt(direction)) + "deg" },
+                                {
+                                    rotate:
+                                        _degree(
+                                            magnetometer - parseInt(direction)
+                                        ) + "deg",
+                                },
                             ],
                         },
                     ]}

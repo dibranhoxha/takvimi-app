@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { getRemainingTime } from "../redux/actions/remaningTimeAction";
 
-const InfoCardHeader = ({ time }) => {
+const InfoCardHeader = ({ time, setShowFavoriteTimes }) => {
     const dispatch = useDispatch();
     const { remainingTime, loading, error } = useSelector(
         (state) => state.remainingTime
@@ -22,7 +22,7 @@ const InfoCardHeader = ({ time }) => {
                 <Text style={styles.boldText}>{remainingTime}</Text>
             </View>
             <View style={styles.iconContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowFavoriteTimes(true)}>
                     <Ionicons name="settings-sharp" size={20} color="black" />
                 </TouchableOpacity>
             </View>

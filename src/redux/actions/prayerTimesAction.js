@@ -1,4 +1,5 @@
 import uuid from "react-native-uuid";
+import moment from "moment"
 
 import {
     FETCH_TIMES_REQUEST,
@@ -28,11 +29,11 @@ export const fetchTimesFailure = (error) => {
     };
 };
 
-export const fetchTimes = (city = "Pristina", country = "Kosovo") => {
+export const fetchTimes = (latitude = 42.574564, longitude = 21.029508) => {
     return (dispatch) => {
         dispatch(fetchTimesRequest());
         fetch(
-            `${API}/v1/timingsByCity?city=${city}&country=${country}&method=4`
+            `${API}/v1/timings/${moment(new Date()).format("DD-MM-YYYY")}?latitude=${latitude}&longitude=${longitude}&method=4`
         )
             .then((response) => response.json())
             .then(({ data }) => {
@@ -49,6 +50,14 @@ export const fetchTimes = (city = "Pristina", country = "Kosovo") => {
     };
 };
 
+// const getClosedTime = (times) => {
+//     const arr = [...times];
+//     // sortAnother(arr);
+//     const sortedTimes = times
+//         .slice()
+//         .sort((a, b) => b.time.localeCompare(getCurrentTime()));
+//     return sortedTimes[0];
+// };
 
 const getClosedTime = (times) => {
     const sortedTimes = times
@@ -57,6 +66,33 @@ const getClosedTime = (times) => {
     return sortedTimes[0];
 };
 
+// const getClosedTime = (times) => {
+//     const sortedTimes = times
+//     .slice()
+//     .sort((a, b) => b.time.toString() < getCurrentTime().toString());
+//     return sortedTimes[0];
+// };
+
+function sortAnother(times) {
+    const newOne = times
+        .slice()
+        .sort((a, b) =>
+            getTimeValue(b.time) < getTimeValue(getCurrentTime())
+                ? 1
+                : getTimeValue(getCurrentTime()) > getTimeValue(b.time)
+                ? -1
+                : 0
+        );
+    console.log({ newOne });
+}
+
+function getTimeValue(x) {
+    var time = x.match(/(\d+)(?::(\d\d))?\s*(P?)/);
+    var h = parseInt(time[1], 10) + (time[3] ? 12 : 0);
+    if (!time[3] && parseInt(time[1], 10) == 12) h = 0;
+    if (time[3] && parseInt(time[1], 10) == 12) h = 12;
+    return h * 60 + (parseInt(time[2], 10) || 0);
+}
 
 const getCurrentTime = () => {
     const date = new Date();
@@ -75,9 +111,7 @@ const formatObject = (data, listOfTimes, closedTime) => {
                 ...data.date.gregorian,
                 month: {
                     ...data.date.gregorian.month,
-                    sq: getTranslatedMonth(
-                        data.date.gregorian.month
-                    ),
+                    sq: getTranslatedMonth(data.date.gregorian.month),
                 },
             },
         },
@@ -85,7 +119,7 @@ const formatObject = (data, listOfTimes, closedTime) => {
         closedTime: closedTime,
     };
     return timesData;
-}
+};
 
 const getTranslatedMonth = (month) => {
     switch (month.en.toLowerCase()) {
@@ -149,8 +183,9 @@ const formatTimes = (timesObj) => {
             time: timesObj[key],
             id: uuid.v4(),
             active: false,
+            favorite: true
         };
-        key !== "Sunset" && key !== "Midnight" && list.push(obj);
+        list.push(obj);
     });
     return list.sort((a, b) => a.time.localeCompare(b.time));
 };
